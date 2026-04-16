@@ -18,7 +18,8 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             'email' => ['required', 'string', 'email'],
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'bio' => ['nullable', 'string', 'max:2000'],
             'address' => ['nullable', 'array'],
             'address.street' => ['nullable', 'string', 'max:255'],
@@ -41,7 +42,8 @@ class UpdateProfileRequest extends FormRequest
 
         $this->merge([
             'email' => strtolower(trim((string) $this->input('email'))),
-            'name' => trim(preg_replace('/\s+/', ' ', (string) $this->input('name')) ?? ''),
+            'first_name' => trim(preg_replace('/\s+/', ' ', (string) $this->input('first_name')) ?? ''),
+            'last_name' => trim(preg_replace('/\s+/', ' ', (string) $this->input('last_name')) ?? ''),
             'bio' => trim((string) $this->input('bio', '')),
             'address' => [
                 'street' => trim((string) ($address['street'] ?? '')),

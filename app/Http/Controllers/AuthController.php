@@ -165,7 +165,12 @@ class AuthController extends Controller
             ['first_name' => '', 'last_name' => ''],
         );
 
-        $requestedName = trim((string) $validated['name']);
+        $requestedFirstName = trim((string) ($validated['first_name'] ?? ''));
+        $requestedLastName = trim((string) ($validated['last_name'] ?? ''));
+        $requestedName = trim(implode(' ', array_filter([
+            $requestedFirstName,
+            $requestedLastName,
+        ])));
         $currentName = trim(implode(' ', array_filter([
             $profile->first_name,
             $profile->last_name,
@@ -189,8 +194,8 @@ class AuthController extends Controller
         }
 
         if ($isNameChanged) {
-            $profile->first_name = $requestedName;
-            $profile->last_name = '';
+            $profile->first_name = $requestedFirstName;
+            $profile->last_name = $requestedLastName;
             $profile->last_name_updated_at = CarbonImmutable::now();
         }
 
