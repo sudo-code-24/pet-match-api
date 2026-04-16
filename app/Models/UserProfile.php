@@ -13,9 +13,14 @@ class UserProfile extends Model
         'user_id',
         'first_name',
         'last_name',
+        'last_name_updated_at',
         'avatar_url',
         'bio',
         'address_id',
+    ];
+
+    protected $casts = [
+        'last_name_updated_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
