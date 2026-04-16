@@ -12,9 +12,9 @@ use App\Services\AuthService;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AuthController extends Controller
 {
@@ -86,7 +86,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function serveAvatar(string $path): Response
+    public function serveAvatar(string $path): BinaryFileResponse
     {
         $normalizedPath = trim(str_replace('\\', '/', $path), '/');
         if ($normalizedPath === '' || str_contains($normalizedPath, '..')) {
@@ -109,7 +109,7 @@ class AuthController extends Controller
 
         $email = strtolower(trim((string) $validated['email']));
          $user = User::query()
-            ->with(['profile.address', 'shelter.addressRecord'])
+            ->with(['userProfile.address', 'userShelter.addressRecord'])
             ->where('email', $email)
             ->first();
 
@@ -122,8 +122,8 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role' => $user->role,
             ],
-            'profile' => $user->profile,
-            'shelter' => $user->shelter,
+            'profile' => $user->userProfile,
+            'shelter' => $user->userShelter,
         ];
 
         return response()->json($result);
@@ -138,7 +138,7 @@ class AuthController extends Controller
 
     public function me(Request $request): JsonResponse
     {
-        $user = $request->user()?->loadMissing(['profile.address', 'shelter.addressRecord']);
+        $user = $request->user()?->loadMissing(['userProfile.address', 'userShelter.addressRecord']);
 
         return response()->json([
             'user' => $user ? [
@@ -146,8 +146,8 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role' => $user->role,
             ] : null,
-            'profile' => $user?->profile,
-            'shelter' => $user?->shelter,
+            'profile' => $user?->userProfile,
+            'shelter' => $user?->userShelter,
         ]);
     }
 }

@@ -4,13 +4,19 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "typescript:generate": "docker compose exec -T app php artisan typescript:transform",
+        "typescript:format": "prettier --write \"../pet-match/types/generated.d.ts\"",
+        "typescript:sync": "npm run typescript:generate && npm run typescript:format",
+        "watch:typescript": "chokidar \"app/Models/**/*.php\" -i \"app/Models/**/.DS_Store\" -c \"npm run typescript:sync\""
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
         "axios": ">=1.11.0 <=1.14.0",
+        "chokidar-cli": "^3.0.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.0.0",
+        "prettier": "^3.6.2",
         "tailwindcss": "^4.0.0",
         "vite": "^8.0.0"
     }

@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[Fillable([
     'role',
@@ -20,6 +21,7 @@ use Laravel\Sanctum\HasApiTokens;
     'password',
 ])]
 #[Hidden(['password', 'remember_token'])]
+#[TypeScript]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -42,12 +44,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function profile(): HasOne
+    public function userProfile(): HasOne
     {
         return $this->hasOne(UserProfile::class);
     }
 
-    public function shelter(): HasOne
+    public function userShelter(): HasOne
     {
         return $this->hasOne(Shelter::class);
     }

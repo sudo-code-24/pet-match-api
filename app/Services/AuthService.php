@@ -84,7 +84,7 @@ class AuthService
      */
     public function login(array $data): array
     {
-        $user = User::query()->with(['profile.address', 'shelter.addressRecord'])->where('email', $data['email'])->first();
+        $user = User::query()->with(['userProfile.address', 'userShelter.addressRecord'])->where('email', $data['email'])->first();
 
         if (! $user || ! Hash::check($data['password'], $user->password)) {
             throw new AuthenticationException('Invalid credentials.');
@@ -96,8 +96,8 @@ class AuthService
                 'email' => $user->email,
                 'role' => $user->role,
             ],
-            'profile' => $user->profile,
-            'shelter' => $user->shelter,
+            'profile' => $user->userProfile,
+            'shelter' => $user->userShelter,
             'token' => $user->createToken('api-token')->plainTextToken,
         ];
     }
