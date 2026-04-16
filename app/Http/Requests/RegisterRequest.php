@@ -23,6 +23,7 @@ class RegisterRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z]+(?: [A-Za-z]+)*$/'],
             'shelter_name' => ['nullable', 'string', 'max:255', 'required_if:role,shelter'],
             'profile' => ['nullable', 'array'],
+            'profile.avatar_url' => ['nullable', 'string', 'max:2048'],
             'profile.bio' => ['nullable', 'string', 'max:2000'],
             'profile.pet_experience' => ['nullable', 'in:beginner,intermediate,expert'],
             'profile.house_type' => ['nullable', 'in:apartment,house,farm'],
@@ -103,6 +104,7 @@ class RegisterRequest extends FormRequest
             'last_name' => $normalizedLastName,
             'shelter_name' => $normalizedShelterName,
             'profile' => [
+                'avatar_url' => $this->normalizeNullableText($profile['avatar_url'] ?? null, false, false),
                 'bio' => $this->normalizeText($profile['bio'] ?? '', true, false),
                 'pet_experience' => $profile['pet_experience'] ?? null,
                 'house_type' => $profile['house_type'] ?? null,
@@ -141,6 +143,24 @@ class RegisterRequest extends FormRequest
         }
 
         $normalized = trim(preg_replace('/\s+/', $allowSpaces ? ' ' : '', $value) ?? '');
+        if ($titleCase) {
+            return ucwords(strtolower($normalized));
+        }
+
+        return $normalized;
+    }
+
+    private function normalizeNullableText(mixed $value, bool $allowSpaces, bool $titleCase): ?string
+    {
+        if (! is_string($value)) {
+            return null;
+        }
+
+        $normalized = trim(preg_replace('/\s+/', $allowSpaces ? ' ' : '', $value) ?? '');
+        if ($normalized === '') {
+            return null;
+        }
+
         if ($titleCase) {
             return ucwords(strtolower($normalized));
         }

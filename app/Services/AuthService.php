@@ -26,18 +26,23 @@ class AuthService
      */
     public function register(array $data): array
     {
+        $firstName = trim((string) $data['first_name']);
+        $lastName = trim((string) $data['last_name']);
+        $fullName = trim(sprintf('%s %s', $firstName, $lastName));
+
         $user = User::query()->create([
             'role' => $data['role'],
-            'email' => $data['email'],
+            'name' => $fullName !== '' ? $fullName : $data['email'],
+            'email' => strtolower(trim((string) $data['email'])),
             'password' => Hash::make($data['password']),
         ]);
 
         $profilePayload = $data['profile'] ?? [];
         $profile = UserProfile::query()->create([
             'user_id' => $user->id,
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'avatar_url' => null,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'avatar_url' => $this->nullableString($profilePayload['avatar_url'] ?? null),
             'bio' => $profilePayload['bio'] ?? null,
             'address_id' => $this->createAddressFromPayload($profilePayload['address'] ?? null)?->id,
         ]);
