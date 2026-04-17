@@ -17,8 +17,6 @@ class PetService
      */
     public function createPet(array $data, string $userId): Pet
     {
-        $imageUrls = $this->normalizeImageUrls($data);
-
         return $this->petRepository->create([
             'user_id' => $userId,
             'name' => trim((string) $data['name']),
@@ -29,8 +27,8 @@ class PetService
             'health_notes' => $this->nullableString($data['health_notes'] ?? null),
             'adoption_details' => $this->nullableString($data['adoption_details'] ?? null),
             'purpose' => isset($data['purpose']) ? (string) $data['purpose'] : 'companion',
-            'image_url' => $imageUrls[0],
-            'image_urls' => $imageUrls,
+            'image_url' => null,
+            'image_urls' => [],
             'active' => array_key_exists('active', $data) ? (bool) $data['active'] : true,
         ]);
     }
@@ -58,42 +56,29 @@ class PetService
             return null;
         }
 
-        if (array_key_exists('name', $data)) {
-            $pet->name = trim((string) $data['name']);
-        }
-        if (array_key_exists('species', $data)) {
-            $pet->species = (string) $data['species'];
-        }
-        if (array_key_exists('gender', $data)) {
-            $pet->gender = (string) $data['gender'];
-        }
-        if (array_key_exists('breed', $data)) {
-            $pet->breed = $this->nullableString($data['breed']);
-        }
-        if (array_key_exists('age', $data)) {
-            $pet->age = $data['age'] === null ? null : (int) $data['age'];
-        }
-        if (array_key_exists('health_notes', $data)) {
-            $pet->health_notes = $this->nullableString($data['health_notes']);
-        }
-        if (array_key_exists('adoption_details', $data)) {
-            $pet->adoption_details = $this->nullableString($data['adoption_details']);
-        }
-        if (array_key_exists('purpose', $data)) {
-            $pet->purpose = (string) $data['purpose'];
-        }
-        if (array_key_exists('image_url', $data)) {
-            $pet->image_url = trim((string) $data['image_url']);
-        }
-        if (array_key_exists('image_urls', $data) || array_key_exists('image_url', $data)) {
-            $imageUrls = $this->normalizeImageUrls($data);
-            $pet->image_urls = $imageUrls;
-            $pet->image_url = $imageUrls[0];
-        }
-        if (array_key_exists('active', $data)) {
-            $pet->active = (bool) $data['active'];
+        $pet->fill($this->normalizeUpdateData($data));
+        $pet->save();
+
+        return $pet->fresh();
+    }
+
+    /**
+     * @param  array<int, string>  $imageUrls
+     */
+    public function replacePetImages(string $id, string $userId, array $imageUrls): ?Pet
+    {
+        $pet = $this->petRepository->findOwnedByUser($id, $userId);
+        if (! $pet) {
+            return null;
         }
 
+        $normalized = array_slice(array_values(array_unique(array_filter(
+            array_map(static fn (string $value): string => trim($value), $imageUrls),
+            static fn (string $value): bool => $value !== '',
+        ))), 0, 3);
+
+        $pet->image_urls = $normalized;
+        $pet->image_url = $normalized[0] ?? null;
         $pet->save();
 
         return $pet->fresh();
@@ -125,29 +110,40 @@ class PetService
 
     /**
      * @param  array<string, mixed>  $data
-     * @return array<int, string>
+     * @return array<string, mixed>
      */
-    private function normalizeImageUrls(array $data): array
+    private function normalizeUpdateData(array $data): array
     {
-        $urls = [];
-
-        if (isset($data['image_urls']) && is_array($data['image_urls'])) {
-            $urls = array_values(array_filter(
-                array_map(
-                    static fn ($value): string => trim((string) $value),
-                    $data['image_urls']
-                ),
-                static fn (string $value): bool => $value !== ''
-            ));
+        $normalized = [];
+        if (array_key_exists('name', $data)) {
+            $normalized['name'] = trim((string) $data['name']);
+        }
+        if (array_key_exists('species', $data)) {
+            $normalized['species'] = (string) $data['species'];
+        }
+        if (array_key_exists('gender', $data)) {
+            $normalized['gender'] = (string) $data['gender'];
+        }
+        if (array_key_exists('breed', $data)) {
+            $normalized['breed'] = $this->nullableString($data['breed']);
+        }
+        if (array_key_exists('age', $data)) {
+            $normalized['age'] = $data['age'] === null ? null : (int) $data['age'];
+        }
+        if (array_key_exists('health_notes', $data)) {
+            $normalized['health_notes'] = $this->nullableString($data['health_notes']);
+        }
+        if (array_key_exists('adoption_details', $data)) {
+            $normalized['adoption_details'] = $this->nullableString($data['adoption_details']);
+        }
+        if (array_key_exists('purpose', $data)) {
+            $normalized['purpose'] = (string) $data['purpose'];
+        }
+        if (array_key_exists('active', $data)) {
+            $normalized['active'] = (bool) $data['active'];
         }
 
-        if ($urls === [] && isset($data['image_url'])) {
-            $legacy = trim((string) $data['image_url']);
-            if ($legacy !== '') {
-                $urls = [$legacy];
-            }
-        }
-
-        return array_slice(array_values(array_unique($urls)), 0, 3);
+        return $normalized;
     }
+
 }

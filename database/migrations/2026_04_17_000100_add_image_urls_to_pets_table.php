@@ -19,13 +19,24 @@ return new class extends Migration
             }
         });
 
-        DB::statement("
-            UPDATE pets
-            SET image_urls = JSON_ARRAY(image_url)
-            WHERE image_url IS NOT NULL
-              AND image_url <> ''
-              AND (image_urls IS NULL OR JSON_LENGTH(image_urls) = 0)
-        ");
+        $driver = DB::connection()->getDriverName();
+        if ($driver === 'pgsql') {
+            DB::statement("
+                UPDATE pets
+                SET image_urls = json_build_array(image_url)
+                WHERE image_url IS NOT NULL
+                  AND image_url <> ''
+                  AND (image_urls IS NULL OR json_array_length(image_urls) = 0)
+            ");
+        } else {
+            DB::statement("
+                UPDATE pets
+                SET image_urls = JSON_ARRAY(image_url)
+                WHERE image_url IS NOT NULL
+                  AND image_url <> ''
+                  AND (image_urls IS NULL OR JSON_LENGTH(image_urls) = 0)
+            ");
+        }
     }
 
     public function down(): void

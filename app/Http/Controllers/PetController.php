@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePetRequest;
 use App\Http\Requests\UpdatePetRequest;
-use App\Models\Pet;
+use App\Http\Resources\PetResource;
 use App\Services\PetService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class PetController extends Controller
 {
@@ -29,7 +33,7 @@ class PetController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $this->formatPet($pet),
+            'data' => new PetResource($pet),
         ], 201);
     }
 
@@ -55,13 +59,75 @@ class PetController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => array_map(
-                fn (Pet $pet): array => $this->formatPet($pet),
-                $pets->items(),
-            ),
+            'data' => PetResource::collection($pets->items()),
             'page' => $pets->currentPage(),
             'limit' => $pets->perPage(),
             'total' => $pets->total(),
+        ]);
+    }
+
+    public function uploadImages(Request $request): JsonResponse
+    {
+        $userId = $this->authenticatedUserId($request);
+        if (! $userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'petId' => ['required', 'string', 'uuid'],
+            'images' => ['required', 'array', 'min:1', 'max:3'],
+            'images.*' => ['required', 'image', 'max:5120'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $petId = (string) $request->input('petId');
+        $pet = $this->petService->getPetById($petId, $userId);
+        if (! $pet) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pet not found',
+            ], 404);
+        }
+
+        $uploadedUrls = [];
+        foreach ((array) $request->file('images', []) as $image) {
+            $extension = $image->guessExtension() ?: 'jpg';
+            $path = $image->storeAs(
+                'pets',
+                Str::uuid().'.'.$extension,
+                'public',
+            );
+
+            if (! is_string($path) || $path === '') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Could not upload pet images.',
+                ], 422);
+            }
+            $uploadedUrls[] = $path;
+        }
+
+        $updatedPet = $this->petService->replacePetImages($petId, $userId, $uploadedUrls);
+        if (! $updatedPet) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pet not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => new PetResource($updatedPet),
         ]);
     }
 
@@ -85,7 +151,7 @@ class PetController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $this->formatPet($pet),
+            'data' => new PetResource($pet),
         ]);
     }
 
@@ -109,7 +175,7 @@ class PetController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $this->formatPet($pet),
+            'data' => new PetResource($pet),
         ]);
     }
 
@@ -149,32 +215,18 @@ class PetController extends Controller
         return $user->id;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private function formatPet(Pet $pet): array
+    public function servePetImages(string $path): BinaryFileResponse
     {
-        $imageUrls = is_array($pet->image_urls) ? $pet->image_urls : [];
-        if ($imageUrls === [] && is_string($pet->image_url) && trim($pet->image_url) !== '') {
-            $imageUrls = [trim($pet->image_url)];
+        $normalizedPath = trim(str_replace('\\', '/', $path), '/');
+        if ($normalizedPath === '' || str_contains($normalizedPath, '..')) {
+            abort(404);
         }
 
-        return [
-            'id' => $pet->id,
-            'user_id' => $pet->user_id,
-            'name' => $pet->name,
-            'species' => $pet->species,
-            'gender' => $pet->gender,
-            'breed' => $pet->breed,
-            'age' => $pet->age,
-            'health_notes' => $pet->health_notes,
-            'adoption_details' => $pet->adoption_details,
-            'purpose' => $pet->purpose,
-            'image_url' => $imageUrls[0] ?? $pet->image_url,
-            'image_urls' => array_slice(array_values(array_unique($imageUrls)), 0, 3),
-            'active' => (bool) $pet->active,
-            'created_at' => $pet->created_at,
-            'updated_at' => $pet->updated_at,
-        ];
+        $storagePath = "pets/{$normalizedPath}";
+        if (! Storage::disk('public')->exists($storagePath)) {
+            abort(404);
+        }
+
+        return response()->file(Storage::disk('public')->path($storagePath));
     }
 }

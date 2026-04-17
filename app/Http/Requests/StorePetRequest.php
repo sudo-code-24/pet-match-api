@@ -28,9 +28,6 @@ class StorePetRequest extends FormRequest
             'health_notes' => ['sometimes', 'nullable', 'string'],
             'adoption_details' => ['sometimes', 'nullable', 'string'],
             'purpose' => ['sometimes', Rule::in(['adoption', 'mate', 'companion'])],
-            'image_url' => ['sometimes', 'required_without:image_urls', 'string', 'max:2048'],
-            'image_urls' => ['sometimes', 'required_without:image_url', 'array', 'min:1', 'max:3'],
-            'image_urls.*' => ['string', 'max:2048'],
         ];
     }
 

@@ -7,6 +7,7 @@ use App\Http\Requests\CheckEmailRequest;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\UpdateVisibilityRequest;
 use App\Http\Requests\UploadProfilePhotoRequest;
 use App\Models\Address;
 use App\Models\User;
@@ -57,7 +58,7 @@ class AuthController extends Controller
 
     public function uploadProfilePhoto(UploadProfilePhotoRequest $request): JsonResponse
     {
-        $validated = $request->validated();
+        $request->validated();
         $photo = $request->file('photo');
         $extension = $photo?->guessExtension() ?: 'jpg';
         $path = $photo?->storeAs(
@@ -70,20 +71,21 @@ class AuthController extends Controller
             return response()->json(['message' => 'Could not upload profile photo.'], 422);
         }
 
-        Storage::disk('public')->url($path);
-        $userId = $validated['user_id'] ?? null;
-        if (is_string($userId) && $userId !== '') {
-            /** @var UserProfile $profile */
-            $profile = UserProfile::query()->firstOrCreate(
-                ['user_id' => $userId],
-                [
-                    'first_name' => '',
-                    'last_name' => '',
-                ],
-            );
-            $profile->avatar_url = $path;
-            $profile->save();
+        $user = $request->user();
+        if (! $user) {
+            return response()->json(['message' => 'Unauthorized.'], 401);
         }
+
+        /** @var UserProfile $profile */
+        $profile = UserProfile::query()->firstOrCreate(
+            ['user_id' => $user->id],
+            [
+                'first_name' => '',
+                'last_name' => '',
+            ],
+        );
+        $profile->avatar_url = $path;
+        $profile->save();
 
         return response()->json([
             'url' => $path,
@@ -108,14 +110,14 @@ class AuthController extends Controller
 
     public function profileDetails(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'email' => ['required', 'string', 'email'],
-        ]);
+        $authenticatedUser = $request->user();
+        if (! $authenticatedUser) {
+            return response()->json(['message' => 'Unauthorized.'], 401);
+        }
 
-        $email = strtolower(trim((string) $validated['email']));
-         $user = User::query()
+        $user = User::query()
             ->with(['userProfile.address', 'userShelter.addressRecord'])
-            ->where('email', $email)
+            ->where('id', $authenticatedUser->id)
             ->first();
 
         if (! $user) {
@@ -137,11 +139,16 @@ class AuthController extends Controller
     public function updateProfile(UpdateProfileRequest $request): JsonResponse
     {
         $validated = $request->validated();
+        $authenticatedUser = $request->user();
+        if (! $authenticatedUser) {
+            return response()->json(['message' => 'Unauthorized.'], 401);
+        }
+
         $email = strtolower(trim((string) $validated['email']));
 
         $user = User::query()
             ->with(['userProfile.address'])
-            ->where('email', $email)
+            ->where('id', $authenticatedUser->id)
             ->first();
 
         if (! $user) {
@@ -279,9 +286,14 @@ class AuthController extends Controller
     public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
         $validated = $request->validated();
+        $authenticatedUser = $request->user();
+        if (! $authenticatedUser) {
+            return response()->json(['message' => 'Unauthorized.'], 401);
+        }
+
         $email = strtolower(trim((string) $validated['email']));
 
-        $user = User::query()->where('email', $email)->first();
+        $user = User::query()->where('id', $authenticatedUser->id)->first();
         if (! $user) {
             return response()->json([
                 'message' => 'User not found.',
@@ -314,6 +326,36 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Password updated successfully.',
+        ]);
+    }
+
+    public function updateVisibility(UpdateVisibilityRequest $request): JsonResponse
+    {
+        $user = $request->user();
+        if (! $user) {
+            return response()->json(['message' => 'Unauthorized.'], 401);
+        }
+
+        $isDiscoverable = (bool) $request->validated('is_discoverable');
+
+        /** @var UserProfile $profile */
+        $profile = UserProfile::query()->firstOrCreate(
+            ['user_id' => $user->id],
+            ['first_name' => '', 'last_name' => ''],
+        );
+
+        $profile->is_discoverable = $isDiscoverable;
+        $profile->save();
+        $profile->loadMissing('address');
+
+        return response()->json([
+            'message' => 'Visibility updated successfully.',
+            'user' => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+            ],
+            'profile' => $profile,
         ]);
     }
 

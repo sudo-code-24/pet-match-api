@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UploadProfilePhotoRequest extends FormRequest
+class UpdateVisibilityRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,7 +17,7 @@ class UploadProfilePhotoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'photo' => ['required', 'file', 'image', 'max:5120'],
+            'is_discoverable' => ['required', 'boolean'],
         ];
     }
 }

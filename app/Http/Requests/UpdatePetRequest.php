@@ -28,9 +28,6 @@ class UpdatePetRequest extends FormRequest
             'health_notes' => ['sometimes', 'nullable', 'string'],
             'adoption_details' => ['sometimes', 'nullable', 'string'],
             'purpose' => ['sometimes', Rule::in(['adoption', 'mate', 'companion'])],
-            'image_url' => ['sometimes', 'required', 'string', 'max:2048'],
-            'image_urls' => ['sometimes', 'array', 'min:1', 'max:3'],
-            'image_urls.*' => ['string', 'max:2048'],
             'active' => ['sometimes', 'boolean'],
         ];
     }

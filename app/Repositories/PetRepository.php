@@ -28,7 +28,10 @@ class PetRepository
             ->orderByDesc('created_at');
 
         if (array_key_exists('active', $filters)) {
-            $query->where('active', (bool) $filters['active']);
+            $active = (bool) $filters['active'];
+            if (! $active) {
+                $query->withoutGlobalScope('active_records')->where('active', false);
+            }
         }
 
         $search = isset($filters['search']) ? trim((string) $filters['search']) : '';
