@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\UserDiscoveryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +39,9 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 
+    Route::get('/users/discover', [UserDiscoveryController::class, 'index']);
+    Route::get('/users/{userId}/public-profile', [UserDiscoveryController::class, 'show']);
+
     // Profile
     Route::prefix('profile')->group(function (): void {
         Route::get('/details', [AuthController::class, 'profileDetails']);
@@ -57,4 +62,10 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::delete('/{id}', 'destroy');
     });
     Route::get('/pet/{id}', [PetController::class, 'show']);
+
+    // 1:1 chat (REST only; no WebSockets)
+    Route::get('/conversations', [ConversationController::class, 'index']);
+    Route::post('/conversations', [ConversationController::class, 'store']);
+    Route::get('/conversations/{id}/messages', [ConversationController::class, 'messages']);
+    Route::post('/conversations/{id}/messages', [ConversationController::class, 'storeMessage']);
 });

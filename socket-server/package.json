@@ -1,0 +1,12 @@
+{
+  "name": "petmatch-socket-server",
+  "private": true,
+  "type": "module",
+  "description": "Socket.IO gateway for Pet Match (Phase 1: JWT auth + user rooms). Run: npm install && npm start. Set LARAVEL_API_URL to your Laravel HTTP origin.",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "socket.io": "^4.8.1"
+  }
+}

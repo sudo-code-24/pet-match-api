@@ -8,7 +8,8 @@
         "typescript:generate": "docker compose exec -T app php artisan typescript:transform",
         "typescript:format": "prettier --write \"../pet-match/types/generated.d.ts\"",
         "typescript:sync": "npm run typescript:generate && npm run typescript:format",
-        "watch:typescript": "chokidar \"app/Models/**/*.php\" -i \"app/Models/**/.DS_Store\" -c \"npm run typescript:sync\""
+        "watch:typescript": "chokidar \"app/Models/**/*.php\" -i \"app/Models/**/.DS_Store\" -c \"npm run typescript:sync\"",
+        "socket": "npm --prefix socket-server run start"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
