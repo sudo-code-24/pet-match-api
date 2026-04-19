@@ -7,14 +7,17 @@ use App\Http\Requests\StoreConversationRequest;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\MessageResource;
 use App\Services\ConversationService;
+use App\Services\SocketBridgeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 
 class ConversationController extends Controller
 {
-    public function __construct(private readonly ConversationService $conversationService)
-    {
+    public function __construct(
+        private readonly ConversationService $conversationService,
+        private readonly SocketBridgeService $socketBridge,
+    ) {
     }
 
     public function index(Request $request): JsonResponse
@@ -76,20 +79,32 @@ class ConversationController extends Controller
             ], 401);
         }
 
-        $limit = (int) $request->query('limit', 100);
+        $limit = (int) $request->query('limit', 30);
+        $cursorRaw = $request->query('cursor');
+        $cursor = is_string($cursorRaw) && $cursorRaw !== '' ? $cursorRaw : null;
 
         try {
-            $messages = $this->conversationService->listMessagesForUser($id, $userId, $limit);
+            $page = $this->conversationService->listMessagesPageForUser($id, $userId, $cursor, $limit);
         } catch (InvalidArgumentException $e) {
+            $message = $e->getMessage();
+            $status = match ($message) {
+                'Invalid cursor.' => 422,
+                default => 404,
+            };
+
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
-            ], 404);
+                'message' => $message,
+            ], $status);
         }
 
         return response()->json([
             'success' => true,
-            'data' => MessageResource::collection($messages),
+            'data' => [
+                'messages' => MessageResource::collection($page['messages']),
+                'next_cursor' => $page['next_cursor'],
+                'has_more' => $page['has_more'],
+            ],
         ]);
     }
 
@@ -118,6 +133,70 @@ class ConversationController extends Controller
             'success' => true,
             'data' => new MessageResource($message),
         ], 201);
+    }
+
+    public function markRead(Request $request, string $id): JsonResponse
+    {
+        $userId = $this->authenticatedUserId($request);
+        if (! $userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        try {
+            $payload = $this->conversationService->markPeerMessagesRead($id, $userId);
+        } catch (InvalidArgumentException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 404);
+        }
+
+        if ($payload['message_ids'] !== []) {
+            $this->socketBridge->broadcast('messages_read', [
+                'conversation_id' => $payload['conversation_id'],
+                'reader_id' => $payload['reader_id'],
+                'read_at' => $payload['read_at'],
+                'message_ids' => $payload['message_ids'],
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $payload,
+        ]);
+    }
+
+    public function destroy(Request $request, string $id): JsonResponse
+    {
+        $userId = $this->authenticatedUserId($request);
+        if (! $userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        try {
+            $this->conversationService->softDeleteConversationForUser($id, $userId);
+        } catch (InvalidArgumentException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 404);
+        }
+
+        $this->socketBridge->broadcast('conversation_deleted', [
+            'conversationId' => $id,
+            'userId' => $userId,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Conversation deleted.',
+        ]);
     }
 
     private function authenticatedUserId(Request $request): ?string

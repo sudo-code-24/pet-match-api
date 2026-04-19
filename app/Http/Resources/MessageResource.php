@@ -23,6 +23,7 @@ class MessageResource extends JsonResource
             'sender_id' => $message->sender_id,
             'message' => $message->message,
             'created_at' => $message->created_at?->toIso8601String(),
+            'read_at' => $message->read_at?->toIso8601String(),
         ];
     }
 }

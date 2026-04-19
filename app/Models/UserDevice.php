@@ -6,19 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
-class Message extends Model
+class UserDevice extends Model
 {
-    public const UPDATED_AT = null;
-
     public $incrementing = false;
 
     protected $keyType = 'string';
 
     protected $fillable = [
-        'conversation_id',
-        'sender_id',
-        'message',
-        'read_at',
+        'user_id',
+        'device_token',
+        'platform',
     ];
 
     /**
@@ -28,7 +25,7 @@ class Message extends Model
     {
         return [
             'created_at' => 'datetime',
-            'read_at' => 'datetime',
+            'updated_at' => 'datetime',
         ];
     }
 
@@ -41,13 +38,8 @@ class Message extends Model
         });
     }
 
-    public function conversation(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Conversation::class);
-    }
-
-    public function sender(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'sender_id');
+        return $this->belongsTo(User::class);
     }
 }

@@ -19,6 +19,9 @@ class Conversation extends Model
     protected $fillable = [
         'user_one_id',
         'user_two_id',
+        'deleted_by_user_one',
+        'deleted_by_user_two',
+        'deleted_at',
     ];
 
     /**
@@ -29,6 +32,9 @@ class Conversation extends Model
         return [
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+            'deleted_by_user_one' => 'boolean',
+            'deleted_by_user_two' => 'boolean',
         ];
     }
 

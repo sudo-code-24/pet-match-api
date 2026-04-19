@@ -3,7 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\UserDeviceController;
 use App\Http\Controllers\UserDiscoveryController;
+use App\Http\Middleware\BindLogUserContext;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,7 +36,7 @@ Route::get('/pets/{path}', [PetController::class, 'servePetImages'])
 | user-owned data belongs here.
 */
 
-Route::middleware('auth:sanctum')->group(function (): void {
+Route::middleware(['auth:sanctum', BindLogUserContext::class])->group(function (): void {
     // Session
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
@@ -48,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::put('/update', [AuthController::class, 'updateProfile']);
         Route::post('/change-password', [AuthController::class, 'changePassword']);
         Route::patch('/visibility', [AuthController::class, 'updateVisibility']);
+        Route::patch('/push-notifications', [AuthController::class, 'updatePushNotifications']);
     });
 
     // Uploads
@@ -63,9 +66,13 @@ Route::middleware('auth:sanctum')->group(function (): void {
     });
     Route::get('/pet/{id}', [PetController::class, 'show']);
 
-    // 1:1 chat (REST only; no WebSockets)
+    // 1:1 chat (REST + Socket.IO sync)
+    Route::post('/devices/fcm-token', [UserDeviceController::class, 'storeFcmToken']);
+    Route::post('/devices/expo-push-token', [UserDeviceController::class, 'storeExpoPushToken']);
     Route::get('/conversations', [ConversationController::class, 'index']);
     Route::post('/conversations', [ConversationController::class, 'store']);
+    Route::post('/conversations/{id}/read', [ConversationController::class, 'markRead']);
+    Route::delete('/conversations/{id}', [ConversationController::class, 'destroy']);
     Route::get('/conversations/{id}/messages', [ConversationController::class, 'messages']);
     Route::post('/conversations/{id}/messages', [ConversationController::class, 'storeMessage']);
 });

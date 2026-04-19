@@ -2,8 +2,25 @@
 name: feature-implementation-engine
 description: End-to-end feature implementation for React Native apps and their backends—screens, modules, APIs, workflows, integrations, and system enhancements—with clean architecture, reusable patterns, and aligned contracts. Use when the user asks to implement or add features, CRUD, endpoints, forms, wizards, uploads, auth, payments, notifications, or full-stack changes spanning UI and server.
 ---
+priority: 100
 
 # Feature Implementation Engine (React Native + Backend)
+
+## Trigger Rules (IMPORTANT)
+
+This skill MUST be used when the user request includes ANY of the following:
+
+- implement or add a feature
+- create or build a new screen or module
+- create or modify API endpoints
+- CRUD operations
+- authentication or login flows
+- file upload features
+- payment integration
+- notifications system
+- React Native + backend changes together
+- full-stack feature work
+- system or workflow expansion
 
 ## High-priority triggers
 

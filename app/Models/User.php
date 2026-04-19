@@ -20,6 +20,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
     'name',
     'email',
     'password',
+    'push_notifications_enabled',
 ])]
 #[Hidden(['password', 'remember_token'])]
 #[TypeScript]
@@ -42,6 +43,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'push_notifications_enabled' => 'boolean',
         ];
     }
 

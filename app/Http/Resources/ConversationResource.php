@@ -28,6 +28,7 @@ class ConversationResource extends JsonResource
 
         return [
             'id' => $conversation->id,
+            'unread_count' => (int) ($conversation->unread_count ?? 0),
             'other_user' => $other instanceof User
                 ? new ChatUserSummaryResource($other)
                 : null,

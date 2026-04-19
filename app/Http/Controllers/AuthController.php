@@ -19,6 +19,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -123,11 +124,12 @@ class AuthController extends Controller
         if (! $user) {
             return response()->json(['message' => 'Profile not found.'], 404);
         }
-        $result= [
+        $result = [
             'user' => [
                 'id' => $user->id,
                 'email' => $user->email,
                 'role' => $user->role,
+                'push_notifications_enabled' => (bool) ($user->push_notifications_enabled ?? true),
             ],
             'profile' => $user->userProfile,
             'shelter' => $user->userShelter,
@@ -359,6 +361,33 @@ class AuthController extends Controller
         ]);
     }
 
+    public function updatePushNotifications(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        if (! $user) {
+            return response()->json(['message' => 'Unauthorized.'], 401);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'enabled' => ['required', 'boolean'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
+
+        $user->push_notifications_enabled = (bool) $validator->validated()['enabled'];
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification preference updated.',
+        ]);
+    }
+
     public function logout(Request $request): JsonResponse
     {
         $this->authService->logout($request->user());
@@ -375,6 +404,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'email' => $user->email,
                 'role' => $user->role,
+                'push_notifications_enabled' => (bool) ($user->push_notifications_enabled ?? true),
             ] : null,
             'profile' => $user?->userProfile,
             'shelter' => $user?->userShelter,
