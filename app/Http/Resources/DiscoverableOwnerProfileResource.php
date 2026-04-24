@@ -30,9 +30,19 @@ class DiscoverableOwnerProfileResource extends JsonResource
         $bioOut = $bio !== '' ? $bio : null;
 
         $city = null;
+        $latitude = null;
+        $longitude = null;
         if ($profile?->address) {
-            $cityRaw = trim((string) $profile->address->city);
+            $addr = $profile->address;
+            $cityRaw = trim((string) $addr->city);
             $city = $cityRaw !== '' ? $cityRaw : null;
+
+            $lat = $addr->latitude;
+            $lon = $addr->longitude;
+            if ($lat !== null && $lon !== null && is_numeric($lat) && is_numeric($lon)) {
+                $latitude = (float) $lat;
+                $longitude = (float) $lon;
+            }
         }
 
         return [
@@ -43,6 +53,8 @@ class DiscoverableOwnerProfileResource extends JsonResource
             'city' => $city,
             'member_since' => $user->created_at?->format('M Y'),
             'pets' => PetResource::collection($user->pets),
+            'latitude' => $latitude,
+            'longitude' => $longitude,
         ];
     }
 }

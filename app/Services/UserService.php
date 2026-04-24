@@ -29,7 +29,7 @@ class UserService
             ->where('users.id', '!=', $excludeUserId)
             ->orderByDesc('user_profiles.updated_at')
             ->with([
-                'userProfile',
+                'userProfile.address',
                 'pets' => static function ($query): void {
                     $query->select('id', 'user_id', 'name', 'species', 'purpose')
                         ->orderBy('name')

@@ -34,12 +34,26 @@ class DiscoverableUserResource extends JsonResource
         $userService = app(UserService::class);
         $petSummary = $userService->buildPetSummary($user);
 
+        $latitude = null;
+        $longitude = null;
+        $address = $profile?->address;
+        if ($address !== null) {
+            $lat = $address->latitude;
+            $lon = $address->longitude;
+            if ($lat !== null && $lon !== null && is_numeric($lat) && is_numeric($lon)) {
+                $latitude = (float) $lat;
+                $longitude = (float) $lon;
+            }
+        }
+
         return [
             'id' => $user->id,
             'name' => $name,
             'profile_image' => $profile?->avatar_url ?? null,
             'bio' => $bioOut,
             'pet_summary' => $petSummary,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
         ];
     }
 }

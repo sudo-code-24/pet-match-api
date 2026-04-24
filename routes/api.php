@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdoptionController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\ShelterOnboardingController;
+use App\Http\Controllers\ShelterPublicController;
 use App\Http\Controllers\UserDeviceController;
 use App\Http\Controllers\UserDiscoveryController;
 use App\Http\Middleware\BindLogUserContext;
@@ -21,11 +24,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/email/exists', [AuthController::class, 'checkEmailExists']);
+Route::get('/shelters/nearby', [ShelterPublicController::class, 'nearby']);
+Route::get('/shelters/{id}', [ShelterPublicController::class, 'show']);
 
 Route::get('/avatars/{path}', [AuthController::class, 'serveAvatar'])
     ->where('path', '.*');
 Route::get('/pets/{path}', [PetController::class, 'servePetImages'])
-    ->where('path', '.*');
+    ->where('path', '^(?!adoption(?:/|$)).*');
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +57,10 @@ Route::middleware(['auth:sanctum', BindLogUserContext::class])->group(function (
         Route::patch('/visibility', [AuthController::class, 'updateVisibility']);
         Route::patch('/push-notifications', [AuthController::class, 'updatePushNotifications']);
     });
+    Route::post('/shelters/onboarding', [ShelterOnboardingController::class, 'store']);
+    Route::post('/adoptions/apply', [AdoptionController::class, 'apply']);
+    Route::get('/pets/adoption', [AdoptionController::class, 'index']);
+    Route::get('/pets/adoption/{id}', [AdoptionController::class, 'show']);
 
     // Uploads
     Route::post('/uploads/profile-photo', [AuthController::class, 'uploadProfilePhoto']);

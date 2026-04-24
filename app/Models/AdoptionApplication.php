@@ -8,19 +8,18 @@ use Illuminate\Support\Str;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class Message extends Model
+class AdoptionApplication extends Model
 {
-    public const UPDATED_AT = null;
-
     public $incrementing = false;
 
     protected $keyType = 'string';
 
     protected $fillable = [
-        'conversation_id',
-        'sender_id',
+        'pet_id',
+        'applicant_user_id',
         'message',
-        'read_at',
+        'status',
+        'submitted_at',
     ];
 
     /**
@@ -29,27 +28,26 @@ class Message extends Model
     protected function casts(): array
     {
         return [
-            'created_at' => 'datetime',
-            'read_at' => 'datetime',
+            'submitted_at' => 'datetime',
         ];
     }
 
     protected static function booted(): void
     {
-        static::creating(function (self $model): void {
-            if (empty($model->id)) {
-                $model->id = (string) Str::uuid();
+        static::creating(function (self $application): void {
+            if (empty($application->id)) {
+                $application->id = (string) Str::uuid();
             }
         });
     }
 
-    public function conversation(): BelongsTo
+    public function pet(): BelongsTo
     {
-        return $this->belongsTo(Conversation::class);
+        return $this->belongsTo(Pet::class);
     }
 
-    public function sender(): BelongsTo
+    public function applicant(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'sender_id');
+        return $this->belongsTo(User::class, 'applicant_user_id');
     }
 }
