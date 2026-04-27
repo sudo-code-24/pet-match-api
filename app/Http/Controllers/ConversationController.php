@@ -11,6 +11,7 @@ use App\Services\SocketBridgeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
+use OpenApi\Attributes as OA;
 
 class ConversationController extends Controller
 {
@@ -20,6 +21,24 @@ class ConversationController extends Controller
     ) {
     }
 
+    #[OA\Get(
+        path: "/api/conversations",
+        tags: ["Conversation"],
+        summary: "Auto generated endpoint",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "data", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function index(Request $request): JsonResponse
     {
         $userId = $this->authenticatedUserId($request);
@@ -38,6 +57,34 @@ class ConversationController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: "/api/conversations",
+        tags: ["Conversation"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "StoreConversationRequest",
+                properties: [
+                    new OA\Property(property: "user_id", type: "string"),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "data", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function store(StoreConversationRequest $request): JsonResponse
     {
         $userId = $this->authenticatedUserId($request);
@@ -69,6 +116,35 @@ class ConversationController extends Controller
         ], 201);
     }
 
+    #[OA\Get(
+        path: "/api/conversations/{id}/messages",
+        tags: ["Conversation"],
+        summary: "Auto generated endpoint",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "string")
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "data", type: "string"),
+                        new OA\Property(property: "messages", type: "string"),
+                        new OA\Property(property: "next_cursor", type: "string"),
+                        new OA\Property(property: "has_more", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function messages(Request $request, string $id): JsonResponse
     {
         $userId = $this->authenticatedUserId($request);
@@ -108,6 +184,42 @@ class ConversationController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: "/api/conversations/{id}/messages",
+        tags: ["Conversation"],
+        summary: "Auto generated endpoint",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "string")
+            ),
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "StoreChatMessageRequest",
+                properties: [
+                    new OA\Property(property: "message", type: "string"),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "data", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function storeMessage(StoreChatMessageRequest $request, string $id): JsonResponse
     {
         $userId = $this->authenticatedUserId($request);
@@ -135,6 +247,40 @@ class ConversationController extends Controller
         ], 201);
     }
 
+    #[OA\Post(
+        path: "/api/conversations/{id}/read",
+        tags: ["Conversation"],
+        summary: "Auto generated endpoint",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "string")
+            ),
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "RequestPayload",
+                additionalProperties: true
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "data", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function markRead(Request $request, string $id): JsonResponse
     {
         $userId = $this->authenticatedUserId($request);
@@ -169,6 +315,32 @@ class ConversationController extends Controller
         ]);
     }
 
+    #[OA\Delete(
+        path: "/api/conversations/{id}",
+        tags: ["Conversation"],
+        summary: "Auto generated endpoint",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "string")
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "message", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function destroy(Request $request, string $id): JsonResponse
     {
         $userId = $this->authenticatedUserId($request);

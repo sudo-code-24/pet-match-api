@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Support\ImageUpload;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UploadProfilePhotoRequest extends FormRequest
@@ -17,7 +18,17 @@ class UploadProfilePhotoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'photo' => ['required', 'file', 'image', 'max:5120'],
+            'photo' => ['required', 'file', 'image', 'max:'.ImageUpload::MAX_KILOBYTES],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'photo.max' => ImageUpload::MAX_ERROR_MESSAGE,
         ];
     }
 }

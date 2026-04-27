@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Support\ImageUpload;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,7 +24,7 @@ class ShelterOnboardingRequest extends FormRequest
             'ein_tax_id' => ['nullable', 'string', 'max:255'],
             'physical_address' => ['required', 'string', 'max:2000'],
             'bio_mission' => ['nullable', 'string', 'max:5000'],
-            'logo' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'logo' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:'.ImageUpload::MAX_KILOBYTES],
             'verification_docs' => ['nullable', 'array'],
             'verification_docs.*' => ['file', 'mimes:pdf,doc,docx', 'max:10240'],
             'shelter_type' => ['required', Rule::in(['Rescue', 'Municipal', 'Sanctuary'])],
@@ -34,6 +35,16 @@ class ShelterOnboardingRequest extends FormRequest
             'adoption_requirements' => ['nullable', 'string', 'max:5000'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'logo.max' => ImageUpload::MAX_ERROR_MESSAGE,
         ];
     }
 }

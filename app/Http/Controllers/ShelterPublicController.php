@@ -5,9 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Shelter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class ShelterPublicController extends Controller
 {
+    #[OA\Get(
+        path: "/api/shelters/nearby",
+        tags: ["ShelterPublic"],
+        summary: "Auto generated endpoint",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "shelters", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function nearby(Request $request): JsonResponse
     {
         $lat = is_numeric($request->query('lat')) ? (float) $request->query('lat') : null;
@@ -49,6 +67,36 @@ class ShelterPublicController extends Controller
         ]);
     }
 
+    #[OA\Get(
+        path: "/api/shelters/{id}",
+        tags: ["ShelterPublic"],
+        summary: "Auto generated endpoint",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "string")
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "shelter", type: "string"),
+                        new OA\Property(property: "id", type: "string"),
+                        new OA\Property(property: "name", type: "string"),
+                        new OA\Property(property: "address", type: "string"),
+                        new OA\Property(property: "latitude", type: "number"),
+                        new OA\Property(property: "longitude", type: "number"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function show(string $id): JsonResponse
     {
         $shelter = Shelter::query()->with('addressRecord')->find($id);

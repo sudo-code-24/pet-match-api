@@ -9,6 +9,7 @@ use App\Services\AdoptionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
+use OpenApi\Attributes as OA;
 
 class AdoptionController extends Controller
 {
@@ -17,6 +18,31 @@ class AdoptionController extends Controller
     ) {
     }
 
+    #[OA\Get(
+        path: "/api/pets/adoption",
+        tags: ["Adoption"],
+        summary: "Auto generated endpoint",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(
+                            property: "data",
+                            type: "array",
+                            items: new OA\Items(type: "object")
+                        ),
+                        new OA\Property(property: "page", type: "string"),
+                        new OA\Property(property: "limit", type: "string"),
+                        new OA\Property(property: "total", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function index(Request $request): JsonResponse
     {
         $pets = $this->adoptionService->listAdoptionPets([
@@ -42,6 +68,32 @@ class AdoptionController extends Controller
         ]);
     }
 
+    #[OA\Get(
+        path: "/api/pets/adoption/{id}",
+        tags: ["Adoption"],
+        summary: "Auto generated endpoint",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "string")
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "data", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function show(Request $request, string $id): JsonResponse
     {
         $pet = $this->adoptionService->getAdoptionPetById($id);
@@ -58,6 +110,38 @@ class AdoptionController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: "/api/adoptions/apply",
+        tags: ["Adoption"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "SubmitAdoptionApplicationRequest",
+                properties: [
+                    new OA\Property(property: "petId", type: "string"),
+                    new OA\Property(property: "applicantUserId", type: "string"),
+                    new OA\Property(property: "message", type: "string"),
+                    new OA\Property(property: "status", type: "string"),
+                    new OA\Property(property: "submittedAt", type: "string"),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "data", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function apply(SubmitAdoptionApplicationRequest $request): JsonResponse
     {
         $user = $request->user();

@@ -1,0 +1,1873 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My API",
+        "description": "API documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/pets/adoption": {
+            "get": {
+                "tags": [
+                    "Adoption"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "7eca167a261a96a8e25e72ea54161f8d",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "page": {
+                                            "type": "string"
+                                        },
+                                        "limit": {
+                                            "type": "string"
+                                        },
+                                        "total": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pets/adoption/{id}": {
+            "get": {
+                "tags": [
+                    "Adoption"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "e13b778e5f72326b13e8d26634b2bcb9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/adoptions/apply": {
+            "post": {
+                "tags": [
+                    "Adoption"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "b66778a5f8a7323d7bdf9f59ef4d2fda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "SubmitAdoptionApplicationRequest",
+                                "properties": {
+                                    "petId": {
+                                        "type": "string"
+                                    },
+                                    "applicantUserId": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    },
+                                    "submittedAt": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "RegisterRequest",
+                                "properties": {
+                                    "role": {
+                                        "type": "string"
+                                    },
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "shelter_name": {
+                                        "type": "string"
+                                    },
+                                    "profile": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "profile.avatar_url": {
+                                        "type": "string"
+                                    },
+                                    "profile.bio": {
+                                        "type": "string"
+                                    },
+                                    "profile.pet_experience": {
+                                        "type": "string"
+                                    },
+                                    "profile.house_type": {
+                                        "type": "string"
+                                    },
+                                    "profile.address": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "profile.address.street": {
+                                        "type": "string"
+                                    },
+                                    "profile.address.landmark": {
+                                        "type": "string"
+                                    },
+                                    "profile.address.barangay": {
+                                        "type": "string"
+                                    },
+                                    "profile.address.city": {
+                                        "type": "string"
+                                    },
+                                    "profile.address.province": {
+                                        "type": "string"
+                                    },
+                                    "profile.address.zip_code": {
+                                        "type": "string"
+                                    },
+                                    "profile.address.country": {
+                                        "type": "string"
+                                    },
+                                    "profile.address.latitude": {
+                                        "type": "number"
+                                    },
+                                    "profile.address.longitude": {
+                                        "type": "number"
+                                    },
+                                    "profile.address.full_address": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "shelter_profile.description": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.address": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.address_details": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "shelter_profile.address_details.street": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.address_details.landmark": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.address_details.barangay": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.address_details.city": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.address_details.province": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.address_details.zip_code": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.address_details.country": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.address_details.latitude": {
+                                        "type": "number"
+                                    },
+                                    "shelter_profile.address_details.longitude": {
+                                        "type": "number"
+                                    },
+                                    "shelter_profile.address_details.full_address": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.phone": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.contact_number": {
+                                        "type": "string"
+                                    },
+                                    "shelter_profile.website": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Request processed successfully",
+                                            "nullable": true
+                                        },
+                                        "data": {
+                                            "title": "ResponseData",
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "nullable": true,
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "LoginRequest",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/email/exists": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "3a013473e6a56ded9748edf05daee46a",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "exists": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/uploads/profile-photo": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "c39f4bf7e5867f88e1c797b764714ebd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "UploadProfilePhotoRequest",
+                                "properties": {
+                                    "photo": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "url": {
+                                            "type": "string"
+                                        },
+                                        "avatar_url": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/avatars/{path}": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "9617bc51babc16d48f2dde115cf3df0e",
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Request processed successfully",
+                                            "nullable": true
+                                        },
+                                        "data": {
+                                            "title": "ResponseData",
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "nullable": true,
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/details": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "e93314ae7be8faf6337f250332125024",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/update": {
+            "put": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "0228f9dae76cfaa10930d40fa0470106",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "UpdateProfileRequest",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "bio": {
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "address.street": {
+                                        "type": "string"
+                                    },
+                                    "address.landmark": {
+                                        "type": "string"
+                                    },
+                                    "address.barangay": {
+                                        "type": "string"
+                                    },
+                                    "address.city": {
+                                        "type": "string"
+                                    },
+                                    "address.province": {
+                                        "type": "string"
+                                    },
+                                    "address.zip_code": {
+                                        "type": "string"
+                                    },
+                                    "address.country": {
+                                        "type": "string"
+                                    },
+                                    "address.latitude": {
+                                        "type": "number"
+                                    },
+                                    "address.longitude": {
+                                        "type": "number"
+                                    },
+                                    "address.full_address": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "role": {
+                                            "type": "string"
+                                        },
+                                        "profile": {
+                                            "type": "string"
+                                        },
+                                        "meta": {
+                                            "type": "string"
+                                        },
+                                        "next_name_update_at": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/change-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "a40ec259a6513d6e814beb8d77b7bc2e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "ChangePasswordRequest",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "current_password": {
+                                        "type": "string"
+                                    },
+                                    "new_password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/visibility": {
+            "patch": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "572acfd823a9eebbe3a3310435eba2f5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "UpdateVisibilityRequest",
+                                "properties": {
+                                    "is_discoverable": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "role": {
+                                            "type": "string"
+                                        },
+                                        "profile": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/push-notifications": {
+            "patch": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "98a5e6e1da70bcc97b53cac3bf5b0b8d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "RequestPayload",
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "RequestPayload",
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "9d9bc556f927575aa492a88c28fe5908",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "role": {
+                                            "type": "string"
+                                        },
+                                        "push_notifications_enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "profile": {
+                                            "type": "string"
+                                        },
+                                        "shelter": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/conversations": {
+            "get": {
+                "tags": [
+                    "Conversation"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "48baaee8c5511d2962e1c494c28b2aa4",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Conversation"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "6667333bc05e27c2c891e73371ca41cd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "StoreConversationRequest",
+                                "properties": {
+                                    "user_id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/conversations/{id}/messages": {
+            "get": {
+                "tags": [
+                    "Conversation"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "9b86ef0aa78292172f81e81252cce4f5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        },
+                                        "messages": {
+                                            "type": "string"
+                                        },
+                                        "next_cursor": {
+                                            "type": "string"
+                                        },
+                                        "has_more": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Conversation"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "ef97f66d185c7072d71c99d74e79b067",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "StoreChatMessageRequest",
+                                "properties": {
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/conversations/{id}/read": {
+            "post": {
+                "tags": [
+                    "Conversation"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "fa8b9270817cb03a6ecf0c6eb8d0a5d1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "RequestPayload",
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/conversations/{id}": {
+            "delete": {
+                "tags": [
+                    "Conversation"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "f1f5c2c5af524f4e79866e2f8dafdb81",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pets": {
+            "get": {
+                "tags": [
+                    "Pet"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "7b44ba1ad8a38f7865a2845fa9ebbfe3",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        },
+                                        "page": {
+                                            "type": "string"
+                                        },
+                                        "limit": {
+                                            "type": "string"
+                                        },
+                                        "total": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Pet"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "9523721805529edb47b46332d56f2826",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "StorePetRequest",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "species": {
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "type": "string"
+                                    },
+                                    "breed": {
+                                        "type": "string"
+                                    },
+                                    "age": {
+                                        "type": "integer"
+                                    },
+                                    "health_notes": {
+                                        "type": "string"
+                                    },
+                                    "adoption_details": {
+                                        "type": "string"
+                                    },
+                                    "purpose": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pets/upload-images": {
+            "post": {
+                "tags": [
+                    "Pet"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "18f3180973c22c26e35605923b8bb8c5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "RequestPayload",
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pet/{id}": {
+            "get": {
+                "tags": [
+                    "Pet"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "f044261439ee37ec2dbba6c56d627262",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pets/{id}": {
+            "put": {
+                "tags": [
+                    "Pet"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "652be7eab297dff87f093d849bdecb12",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "UpdatePetRequest",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "species": {
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "type": "string"
+                                    },
+                                    "breed": {
+                                        "type": "string"
+                                    },
+                                    "age": {
+                                        "type": "integer"
+                                    },
+                                    "health_notes": {
+                                        "type": "string"
+                                    },
+                                    "adoption_details": {
+                                        "type": "string"
+                                    },
+                                    "purpose": {
+                                        "type": "string"
+                                    },
+                                    "active": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Pet"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "dab25348cae9362e48ade0e7cf34c465",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pets/{path}": {
+            "get": {
+                "tags": [
+                    "Pet"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "e229bba19df93f2dca080b7a741af42e",
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Request processed successfully",
+                                            "nullable": true
+                                        },
+                                        "data": {
+                                            "title": "ResponseData",
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "nullable": true,
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shelters/onboarding": {
+            "post": {
+                "tags": [
+                    "ShelterOnboarding"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "f9022e2f904252e753a5da08bf9c7eb2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "ShelterOnboardingRequest",
+                                "properties": {
+                                    "organization_name": {
+                                        "type": "string"
+                                    },
+                                    "website": {
+                                        "type": "string"
+                                    },
+                                    "ein_tax_id": {
+                                        "type": "string"
+                                    },
+                                    "physical_address": {
+                                        "type": "string"
+                                    },
+                                    "bio_mission": {
+                                        "type": "string"
+                                    },
+                                    "logo": {
+                                        "type": "string"
+                                    },
+                                    "verification_docs": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "verification_docs.*": {
+                                        "type": "string"
+                                    },
+                                    "shelter_type": {
+                                        "type": "string"
+                                    },
+                                    "max_capacity": {
+                                        "type": "integer"
+                                    },
+                                    "facilities": {
+                                        "type": "string"
+                                    },
+                                    "operating_hours": {
+                                        "type": "string"
+                                    },
+                                    "services_offered": {
+                                        "type": "string"
+                                    },
+                                    "adoption_requirements": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number"
+                                    },
+                                    "longitude": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "shelter": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shelters/nearby": {
+            "get": {
+                "tags": [
+                    "ShelterPublic"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "b9a1051d45d5607cc1e6e6bf6fdfd0c9",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "shelters": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shelters/{id}": {
+            "get": {
+                "tags": [
+                    "ShelterPublic"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "9cd8ba56879eec94c5506d62ca4dede2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "shelter": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "address": {
+                                            "type": "string"
+                                        },
+                                        "latitude": {
+                                            "type": "number"
+                                        },
+                                        "longitude": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/fcm-token": {
+            "post": {
+                "tags": [
+                    "UserDevice"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "0ece5cfd8cb65c9ba5cd907448908b54",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "RequestPayload",
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true,
+                                            "deprecated": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Request processed successfully",
+                                            "nullable": true,
+                                            "deprecated": true
+                                        },
+                                        "data": {
+                                            "title": "ResponseData",
+                                            "type": "object",
+                                            "deprecated": true,
+                                            "additionalProperties": true
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "nullable": true,
+                                            "deprecated": true,
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/expo-push-token": {
+            "post": {
+                "tags": [
+                    "UserDevice"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "4dc0dce7ae27ac55a21c9d8d30f0e363",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "RequestPayload",
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Request processed successfully",
+                                            "nullable": true
+                                        },
+                                        "data": {
+                                            "title": "ResponseData",
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "nullable": true,
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/discover": {
+            "get": {
+                "tags": [
+                    "UserDiscovery"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "38bc973ee6dff68af98970e14349de7b",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        },
+                                        "page": {
+                                            "type": "string"
+                                        },
+                                        "limit": {
+                                            "type": "string"
+                                        },
+                                        "total": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{userId}/public-profile": {
+            "get": {
+                "tags": [
+                    "UserDiscovery"
+                ],
+                "summary": "Auto generated endpoint",
+                "operationId": "e1392264d3b6f7b40a9d0a19a58183b2",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Adoption",
+            "description": "Adoption"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Conversation",
+            "description": "Conversation"
+        },
+        {
+            "name": "Pet",
+            "description": "Pet"
+        },
+        {
+            "name": "ShelterOnboarding",
+            "description": "ShelterOnboarding"
+        },
+        {
+            "name": "ShelterPublic",
+            "description": "ShelterPublic"
+        },
+        {
+            "name": "UserDevice",
+            "description": "UserDevice"
+        },
+        {
+            "name": "UserDiscovery",
+            "description": "UserDiscovery"
+        }
+    ]
+}

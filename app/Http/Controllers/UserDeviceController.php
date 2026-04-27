@@ -6,17 +6,94 @@ use App\Models\UserDevice;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Attributes as OA;
 
 class UserDeviceController extends Controller
 {
     /**
      * @deprecated Prefer POST /api/devices/expo-push-token with Expo tokens from getExpoPushTokenAsync.
      */
+    #[OA\Post(
+        path: "/api/devices/fcm-token",
+        tags: ["UserDevice"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "RequestPayload",
+                additionalProperties: true
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "boolean", example: true),
+                        new OA\Property(property: "message", type: "string", nullable: true, example: "Request processed successfully"),
+                        new OA\Property(
+                            property: "data",
+                            type: "object",
+                            title: "ResponseData",
+                            additionalProperties: true
+                        ),
+                        new OA\Property(
+                            property: "meta",
+                            type: "object",
+                            nullable: true,
+                            additionalProperties: true
+                        ),
+                    ]
+                )
+            )
+        ]
+    )]
     public function storeFcmToken(Request $request): JsonResponse
     {
         return $this->storeDevicePushToken($request, 'device_token');
     }
 
+    #[OA\Post(
+        path: "/api/devices/expo-push-token",
+        tags: ["UserDevice"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "RequestPayload",
+                additionalProperties: true
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "boolean", example: true),
+                        new OA\Property(property: "message", type: "string", nullable: true, example: "Request processed successfully"),
+                        new OA\Property(
+                            property: "data",
+                            type: "object",
+                            title: "ResponseData",
+                            additionalProperties: true
+                        ),
+                        new OA\Property(
+                            property: "meta",
+                            type: "object",
+                            nullable: true,
+                            additionalProperties: true
+                        ),
+                    ]
+                )
+            )
+        ]
+    )]
     public function storeExpoPushToken(Request $request): JsonResponse
     {
         return $this->storeDevicePushToken($request, 'expo_push_token');

@@ -7,6 +7,7 @@ use App\Http\Resources\DiscoverableUserResource;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class UserDiscoveryController extends Controller
 {
@@ -14,6 +15,27 @@ class UserDiscoveryController extends Controller
     {
     }
 
+    #[OA\Get(
+        path: "/api/users/discover",
+        tags: ["UserDiscovery"],
+        summary: "Auto generated endpoint",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "data", type: "string"),
+                        new OA\Property(property: "page", type: "string"),
+                        new OA\Property(property: "limit", type: "string"),
+                        new OA\Property(property: "total", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function index(Request $request): JsonResponse
     {
         $userId = $this->authenticatedUserId($request);
@@ -38,6 +60,32 @@ class UserDiscoveryController extends Controller
         ]);
     }
 
+    #[OA\Get(
+        path: "/api/users/{userId}/public-profile",
+        tags: ["UserDiscovery"],
+        summary: "Auto generated endpoint",
+        parameters: [
+            new OA\Parameter(
+                name: "userId",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "string")
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "data", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function show(Request $request, string $userId): JsonResponse
     {
         $viewerId = $this->authenticatedUserId($request);

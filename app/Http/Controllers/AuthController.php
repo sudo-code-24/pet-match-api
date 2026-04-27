@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
@@ -29,6 +30,100 @@ class AuthController extends Controller
     {
     }
 
+    #[OA\Post(
+        path: "/api/register",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "RegisterRequest",
+                properties: [
+                    new OA\Property(property: "role", type: "string"),
+                    new OA\Property(property: "first_name", type: "string"),
+                    new OA\Property(property: "last_name", type: "string"),
+                    new OA\Property(property: "shelter_name", type: "string"),
+                    new OA\Property(
+                        property: "profile",
+                        type: "array",
+                        items: new OA\Items(type: "string")
+                    ),
+                    new OA\Property(property: "profile.avatar_url", type: "string"),
+                    new OA\Property(property: "profile.bio", type: "string"),
+                    new OA\Property(property: "profile.pet_experience", type: "string"),
+                    new OA\Property(property: "profile.house_type", type: "string"),
+                    new OA\Property(
+                        property: "profile.address",
+                        type: "array",
+                        items: new OA\Items(type: "string")
+                    ),
+                    new OA\Property(property: "profile.address.street", type: "string"),
+                    new OA\Property(property: "profile.address.landmark", type: "string"),
+                    new OA\Property(property: "profile.address.barangay", type: "string"),
+                    new OA\Property(property: "profile.address.city", type: "string"),
+                    new OA\Property(property: "profile.address.province", type: "string"),
+                    new OA\Property(property: "profile.address.zip_code", type: "string"),
+                    new OA\Property(property: "profile.address.country", type: "string"),
+                    new OA\Property(property: "profile.address.latitude", type: "number"),
+                    new OA\Property(property: "profile.address.longitude", type: "number"),
+                    new OA\Property(property: "profile.address.full_address", type: "string"),
+                    new OA\Property(
+                        property: "shelter_profile",
+                        type: "array",
+                        items: new OA\Items(type: "string")
+                    ),
+                    new OA\Property(property: "shelter_profile.description", type: "string"),
+                    new OA\Property(property: "shelter_profile.address", type: "string"),
+                    new OA\Property(
+                        property: "shelter_profile.address_details",
+                        type: "array",
+                        items: new OA\Items(type: "string")
+                    ),
+                    new OA\Property(property: "shelter_profile.address_details.street", type: "string"),
+                    new OA\Property(property: "shelter_profile.address_details.landmark", type: "string"),
+                    new OA\Property(property: "shelter_profile.address_details.barangay", type: "string"),
+                    new OA\Property(property: "shelter_profile.address_details.city", type: "string"),
+                    new OA\Property(property: "shelter_profile.address_details.province", type: "string"),
+                    new OA\Property(property: "shelter_profile.address_details.zip_code", type: "string"),
+                    new OA\Property(property: "shelter_profile.address_details.country", type: "string"),
+                    new OA\Property(property: "shelter_profile.address_details.latitude", type: "number"),
+                    new OA\Property(property: "shelter_profile.address_details.longitude", type: "number"),
+                    new OA\Property(property: "shelter_profile.address_details.full_address", type: "string"),
+                    new OA\Property(property: "shelter_profile.phone", type: "string"),
+                    new OA\Property(property: "shelter_profile.contact_number", type: "string"),
+                    new OA\Property(property: "shelter_profile.website", type: "string"),
+                    new OA\Property(property: "email", type: "string"),
+                    new OA\Property(property: "password", type: "string"),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "boolean", example: true),
+                        new OA\Property(property: "message", type: "string", nullable: true, example: "Request processed successfully"),
+                        new OA\Property(
+                            property: "data",
+                            type: "object",
+                            title: "ResponseData",
+                            additionalProperties: true
+                        ),
+                        new OA\Property(
+                            property: "meta",
+                            type: "object",
+                            nullable: true,
+                            additionalProperties: true
+                        ),
+                    ]
+                )
+            )
+        ]
+    )]
     public function register(RegisterRequest $request): JsonResponse
     {
         $result = $this->authService->register($request->validated());
@@ -36,6 +131,34 @@ class AuthController extends Controller
         return response()->json($result, 201);
     }
 
+    #[OA\Post(
+        path: "/api/login",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "LoginRequest",
+                properties: [
+                    new OA\Property(property: "email", type: "string"),
+                    new OA\Property(property: "password", type: "string"),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "message", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function login(LoginRequest $request): JsonResponse
     {
         try {
@@ -47,6 +170,23 @@ class AuthController extends Controller
         return response()->json($result);
     }
 
+    #[OA\Get(
+        path: "/api/email/exists",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "exists", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function checkEmailExists(CheckEmailRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -57,6 +197,34 @@ class AuthController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: "/api/uploads/profile-photo",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "UploadProfilePhotoRequest",
+                properties: [
+                    new OA\Property(property: "photo", type: "string"),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "url", type: "string"),
+                        new OA\Property(property: "avatar_url", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function uploadProfilePhoto(UploadProfilePhotoRequest $request): JsonResponse
     {
         $request->validated();
@@ -94,6 +262,44 @@ class AuthController extends Controller
         ]);
     }
 
+    #[OA\Get(
+        path: "/api/avatars/{path}",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        parameters: [
+            new OA\Parameter(
+                name: "path",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "string")
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "boolean", example: true),
+                        new OA\Property(property: "message", type: "string", nullable: true, example: "Request processed successfully"),
+                        new OA\Property(
+                            property: "data",
+                            type: "object",
+                            title: "ResponseData",
+                            additionalProperties: true
+                        ),
+                        new OA\Property(
+                            property: "meta",
+                            type: "object",
+                            nullable: true,
+                            additionalProperties: true
+                        ),
+                    ]
+                )
+            )
+        ]
+    )]
     public function serveAvatar(string $path): BinaryFileResponse
     {
         $normalizedPath = trim(str_replace('\\', '/', $path), '/');
@@ -109,6 +315,23 @@ class AuthController extends Controller
         return response()->file(Storage::disk('public')->path($storagePath));
     }
 
+    #[OA\Get(
+        path: "/api/profile/details",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "message", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function profileDetails(Request $request): JsonResponse
     {
         $authenticatedUser = $request->user();
@@ -138,6 +361,58 @@ class AuthController extends Controller
         return response()->json($result);
     }
 
+    #[OA\Put(
+        path: "/api/profile/update",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "UpdateProfileRequest",
+                properties: [
+                    new OA\Property(property: "email", type: "string"),
+                    new OA\Property(property: "first_name", type: "string"),
+                    new OA\Property(property: "last_name", type: "string"),
+                    new OA\Property(property: "bio", type: "string"),
+                    new OA\Property(
+                        property: "address",
+                        type: "array",
+                        items: new OA\Items(type: "string")
+                    ),
+                    new OA\Property(property: "address.street", type: "string"),
+                    new OA\Property(property: "address.landmark", type: "string"),
+                    new OA\Property(property: "address.barangay", type: "string"),
+                    new OA\Property(property: "address.city", type: "string"),
+                    new OA\Property(property: "address.province", type: "string"),
+                    new OA\Property(property: "address.zip_code", type: "string"),
+                    new OA\Property(property: "address.country", type: "string"),
+                    new OA\Property(property: "address.latitude", type: "number"),
+                    new OA\Property(property: "address.longitude", type: "number"),
+                    new OA\Property(property: "address.full_address", type: "string"),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "message", type: "string"),
+                        new OA\Property(property: "user", type: "string"),
+                        new OA\Property(property: "id", type: "string"),
+                        new OA\Property(property: "email", type: "string"),
+                        new OA\Property(property: "role", type: "string"),
+                        new OA\Property(property: "profile", type: "string"),
+                        new OA\Property(property: "meta", type: "string"),
+                        new OA\Property(property: "next_name_update_at", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function updateProfile(UpdateProfileRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -285,6 +560,35 @@ class AuthController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: "/api/profile/change-password",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "ChangePasswordRequest",
+                properties: [
+                    new OA\Property(property: "email", type: "string"),
+                    new OA\Property(property: "current_password", type: "string"),
+                    new OA\Property(property: "new_password", type: "string"),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "message", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -331,6 +635,38 @@ class AuthController extends Controller
         ]);
     }
 
+    #[OA\Patch(
+        path: "/api/profile/visibility",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "UpdateVisibilityRequest",
+                properties: [
+                    new OA\Property(property: "is_discoverable", type: "boolean"),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "message", type: "string"),
+                        new OA\Property(property: "user", type: "string"),
+                        new OA\Property(property: "id", type: "string"),
+                        new OA\Property(property: "email", type: "string"),
+                        new OA\Property(property: "role", type: "string"),
+                        new OA\Property(property: "profile", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function updateVisibility(UpdateVisibilityRequest $request): JsonResponse
     {
         $user = $request->user();
@@ -361,6 +697,32 @@ class AuthController extends Controller
         ]);
     }
 
+    #[OA\Patch(
+        path: "/api/profile/push-notifications",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "RequestPayload",
+                additionalProperties: true
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "success", type: "string"),
+                        new OA\Property(property: "message", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function updatePushNotifications(Request $request): JsonResponse
     {
         $user = $request->user();
@@ -388,6 +750,31 @@ class AuthController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: "/api/logout",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                type: "object",
+                title: "RequestPayload",
+                additionalProperties: true
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "message", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function logout(Request $request): JsonResponse
     {
         $this->authService->logout($request->user());
@@ -395,6 +782,29 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out successfully.']);
     }
 
+    #[OA\Get(
+        path: "/api/me",
+        tags: ["Auth"],
+        summary: "Auto generated endpoint",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "user", type: "string"),
+                        new OA\Property(property: "id", type: "string"),
+                        new OA\Property(property: "email", type: "string"),
+                        new OA\Property(property: "role", type: "string"),
+                        new OA\Property(property: "push_notifications_enabled", type: "boolean"),
+                        new OA\Property(property: "profile", type: "string"),
+                        new OA\Property(property: "shelter", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function me(Request $request): JsonResponse
     {
         $user = $request->user()?->loadMissing(['userProfile.address', 'userShelter.addressRecord']);
